@@ -83,7 +83,8 @@ Summary:
 4. The inventory UI updates correctly when items from the ground are picked up
 5. The inventory and inventory UI are separate concepts, the UI reflects the content of the inventory object
 
-(Image 1: Skyrim Inventory) ![](RackMultipart20210319-4-d5xpni_html_2439dca2e6ea24f9.jpg)
+https://miro.medium.com/max/3840/1*iKQMjWoYU4yivgPuHXFyzQ.jpeg
+(Image 1: Skyrim Inventory)
 
 Task 9: (10 Points)
 
