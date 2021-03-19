@@ -36,8 +36,7 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = (transform.forward * moveInput.y * speed) + (transform.right * moveInput.x * speed);
         rigidbody.velocity = new Vector3(movement.x, rigidbody.velocity.y, movement.z);
 
-        animator.SetFloat("Horizontal", moveInput.x * speed);
-        animator.SetFloat("Vertical", moveInput.y * speed);
+        animator.SetFloat("MovementSpeed", moveInput.y * (speed / walkSpeed));
 
         //only rotate the player when moving, allows user to look at the player when idle
         if (moveInput.magnitude > 0.01f)
