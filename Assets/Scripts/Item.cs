@@ -19,12 +19,6 @@ public class Item : MonoBehaviour
         SetCharasteristics();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void SetCharasteristics()
     {
         if(itemScriptableObject == null)
@@ -37,6 +31,10 @@ public class Item : MonoBehaviour
         Value = itemScriptableObject.Value;
         Description = itemScriptableObject.Description;
         Category = itemScriptableObject.Category;
+    }
 
+    public string GetItemName()
+    {
+        return ItemName;
     }
 }

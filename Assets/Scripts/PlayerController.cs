@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform followTransform;
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rigidbody;
+    [SerializeField] CanvasItemDisplay canvasHandler;
 
     Vector2 moveInput;
     Vector2 lookInput;
@@ -97,6 +98,8 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Looking at Pickable object");
 
+                canvasHandler.setItemName(hit.transform.GetComponent<Item>().GetItemName());
+
                 if(Input.GetKeyDown(KeyCode.E))
                 {
                     StartCoroutine(FreezePlayer(1));
@@ -108,6 +111,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                canvasHandler.setItemName("");
+
                 Debug.Log("Scouting");
                 return false;
             }
