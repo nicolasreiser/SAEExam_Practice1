@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float walkSpeed = 1f;
     [SerializeField] float sprintSpeed = 3f;
     [SerializeField] Transform followTransform;
+    [SerializeField] Transform cameraTransform;
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] CanvasItemDisplay canvasHandler;
@@ -18,11 +19,16 @@ public class PlayerController : MonoBehaviour
     Vector2 lookInput;
     float sprintInput;
     bool freeze;
+    public bool slowed;
+
+    public Inventory inventory;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         freeze = false;
+        slowed = false;
+        inventory = new Inventory(15f);
     }
 
     private void Update()
@@ -42,13 +48,16 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         lookInput = new Vector2(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
-        sprintInput = Input.GetAxis("Sprint");
+        if(!slowed)
+        {
+            sprintInput = Input.GetAxis("Sprint");
+        }
 
         UpdateFollowTargetRotation();
 
         float speed = 0;
-
-        speed = Mathf.Lerp(walkSpeed, sprintSpeed, sprintInput);
+         speed = Mathf.Lerp(walkSpeed, sprintSpeed, sprintInput);
+        
         Vector3 movement = (transform.forward * moveInput.y * speed) + (transform.right * moveInput.x * speed);
         rigidbody.velocity = new Vector3(movement.x, rigidbody.velocity.y, movement.z);
 
@@ -91,7 +100,7 @@ public class PlayerController : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             if(hit.transform.tag.Equals("Collectable"))
@@ -102,10 +111,16 @@ public class PlayerController : MonoBehaviour
 
                 if(Input.GetKeyDown(KeyCode.E))
                 {
-                    StartCoroutine(FreezePlayer(1));
-                    animator.SetTrigger("PickUp");
-                    Destroy(hit.transform.gameObject);
-                    Debug.Log("Object Destroyed");
+                    if(inventory.TryToAddItem(hit.transform.GetComponent<Item>()))
+                    {
+                        StartCoroutine(FreezePlayer(1));
+                        animator.SetTrigger("PickUp");
+                        Destroy(hit.transform.gameObject);
+                        Debug.Log("Object Picked Up");
+
+                        Debug.Log("Inventory size : " + inventory.GetInventorySize());
+                    }
+
                 }
                 return true;
             }

@@ -37,4 +37,9 @@ public class Item : MonoBehaviour
     {
         return ItemName;
     }
+
+    public float GetWeight()
+    {
+        return Weight;
+    }
 }
