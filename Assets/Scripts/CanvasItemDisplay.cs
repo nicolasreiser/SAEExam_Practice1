@@ -18,7 +18,8 @@ public class CanvasItemDisplay : MonoBehaviour
 
     public void setItemName(string ItemName)
     {
-        ItemNameTextField.SetText(ItemName);
+        string name = ItemName + " (Press E to pick up)";
+        ItemNameTextField.SetText(name);
     }
 
     public void ToggleMenu()
