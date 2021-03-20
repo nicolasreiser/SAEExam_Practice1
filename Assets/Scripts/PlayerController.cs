@@ -16,13 +16,28 @@ public class PlayerController : MonoBehaviour
     Vector2 moveInput;
     Vector2 lookInput;
     float sprintInput;
+    bool freeze;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        freeze = false;
+    }
+
+    private void Update()
+    {
+        LookingAtItem();
     }
 
     private void FixedUpdate()
+    {
+        if(!freeze)
+        {
+            PlayerMovement();
+        }
+    }
+
+    private void PlayerMovement()
     {
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         lookInput = new Vector2(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
@@ -47,7 +62,6 @@ public class PlayerController : MonoBehaviour
             followTransform.localEulerAngles = new Vector3(followTransform.localEulerAngles.x, 0, 0);
         }
     }
-
     private void UpdateFollowTargetRotation()
     {
         //Update follow target rotation
@@ -71,4 +85,50 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    private bool LookingAtItem()
+    {
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            if(hit.transform.tag.Equals("Collectable"))
+            {
+                Debug.Log("Looking at Pickable object");
+
+                if(Input.GetKeyDown(KeyCode.E))
+                {
+                    StartCoroutine(FreezePlayer(1));
+                    animator.SetTrigger("PickUp");
+                    Destroy(hit.transform.gameObject);
+                    Debug.Log("Object Destroyed");
+                }
+                return true;
+            }
+            else
+            {
+                Debug.Log("Scouting");
+                return false;
+            }
+
+        }
+
+        return false;
+    }
+
+    private void PickUpItem()
+    {
+        if(LookingAtItem())
+        {
+
+        }
+    }
+
+    private IEnumerator FreezePlayer(float FreezeTimeInSeconds)
+    {
+        freeze = true;
+        yield return new WaitForSeconds(FreezeTimeInSeconds);
+        freeze = false;
+    }
 }

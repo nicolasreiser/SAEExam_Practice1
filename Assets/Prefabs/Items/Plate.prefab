@@ -268,6 +268,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8852923094554973954}
   - component: {fileID: 8852923094574285730}
+  - component: {fileID: 2292781112028448152}
+  - component: {fileID: 3532108799574403980}
   m_Layer: 0
   m_Name: Plate
   m_TagString: Untagged
@@ -319,3 +321,29 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6514908325883419459}
   m_Enabled: 1
+--- !u!65 &2292781112028448152
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852923094554807074}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.37013876, y: 0.064885795, z: 0.35790157}
+  m_Center: {x: -0.01056093, y: 0.02348569, z: 0.007579088}
+--- !u!114 &3532108799574403980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852923094554807074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541cc548a551d6140a0ccebc0bb267c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemScriptableObject: {fileID: 11400000, guid: 010523da987345c4b81a758c777d8f36, type: 2}
