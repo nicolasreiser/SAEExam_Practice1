@@ -19,7 +19,8 @@ public class PlayerController : MonoBehaviour
     Vector2 lookInput;
     float sprintInput;
     bool freeze;
-    public bool slowed;
+    bool slowed;
+    bool paused;
 
     public Inventory inventory;
 
@@ -33,12 +34,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        LookingAtItem();
+        if(!paused)
+        {
+            LookingAtItem();
+        }
+        MenuCheck();
     }
 
     private void FixedUpdate()
     {
-        if(!freeze)
+        if(!freeze && !paused)
         {
             PlayerMovement();
         }
@@ -100,9 +105,8 @@ public class PlayerController : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.TransformDirection(Vector3.forward), out hit, 4))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             if(hit.transform.tag.Equals("Collectable"))
             {
                 Debug.Log("Looking at Pickable object");
@@ -126,24 +130,27 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                canvasHandler.setItemName("");
+                canvasHandler.setItemName(" ");
 
                 Debug.Log("Scouting");
                 return false;
             }
 
         }
+        canvasHandler.setItemName(" ");
 
         return false;
     }
 
-    private void PickUpItem()
+    private void MenuCheck()
     {
-        if(LookingAtItem())
+        if(Input.GetKeyDown(KeyCode.Tab))
         {
-
+            paused = !paused;
+            canvasHandler.ToggleMenu();
         }
     }
+
 
     private IEnumerator FreezePlayer(float FreezeTimeInSeconds)
     {
